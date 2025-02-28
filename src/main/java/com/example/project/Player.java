@@ -29,8 +29,9 @@ public class Player{
             int count = c;
             while (Utility.getRankValue(cards.get(count - 1).getRank()) > Utility.getRankValue(cards.get(count).getRank()) && count != 0) {
                 cards.add(count - 1, cards.remove(count));
-                count--;
+                count++;
             }
+            cards.add(count);
         }
         allCards = cards;
     } 
@@ -39,8 +40,11 @@ public class Player{
         ArrayList<Integer> rFreq = new ArrayList<>();
         String [] ranks = Utility.getRanks();
         for (int c = 0; c < ranks.length; c++){
+            int count = 0;
             for (int d = 0; d < allCards.size(); d++) {
-                if (allCards.get(d).)
+                if (allCards.get(d).getRank().equals((String)(c + 2))) {
+                    count++;
+                }
             }
         }
         return rFreq; 
