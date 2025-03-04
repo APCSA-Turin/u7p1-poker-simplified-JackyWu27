@@ -16,15 +16,22 @@ public class Deck{
     }
 
     public  void initializeDeck(){ //hint.. use the utility class
-        
+        for (int c = 0; c < Utility.getRanks().length; c++) {
+            for (int d = 0; d < Utility.getSuits().length; d++) {
+                cards.add(new Card(Utility.getRanks()[c], Utility.getSuits()[d]));
+            }
+        }
     }
 
     public  void shuffleDeck(){ //You can use the Collections library or another method. You do not have to create your own shuffle algorithm
-        
+        Collections.shuffle(cards);
     }
 
     public  Card drawCard(){
-       return new Card("","");
+        if (isEmpty()) {
+            return null;
+        }
+       return cards.remove(0);
     }
 
     public  boolean isEmpty(){
