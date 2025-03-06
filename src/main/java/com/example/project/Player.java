@@ -19,8 +19,13 @@ public class Player{
         hand.add(c);
     }
 
-    public String playHand(ArrayList<Card> communityCards){      
-        allCards = communityCards;
+    public String playHand(ArrayList<Card> communityCards){  
+        allCards = new ArrayList<Card>(); 
+        ArrayList<Integer> list = new ArrayList<Integer>(); 
+        for (int c = 0; c < communityCards.size(); c++) {
+            allCards.add(communityCards.get(c));
+            list.add(Utility.getRankValue(communityCards.get(c).getRank()));
+        }
         for (int c = 0; c < getHand().size(); c++) {
             allCards.add(getHand().get(c));
         }
@@ -33,11 +38,11 @@ public class Player{
                 straightCheck = false;
             }
         }
-        if (rFreq.contains(4)) {
+        if (isInList(4, rFreq)) {
             return "Four of a Kind";
-        } else if (sFreq.contains(5)) {
+        } else if (isInList(5, sFreq)) {
             if (straightCheck) {
-                if (allCards.get(0).getRank().equals(10)) {
+                if (allCards.get(0).getRank() == "10") {
                     return "Royal Flush";
                 } else {
                     return "Straight Flush";
@@ -47,24 +52,27 @@ public class Player{
             }
         } else if (straightCheck) {
             return "Straight";
-        } else if (rFreq.contains(3)) {
-            if (rFreq.contains(2)) {
+        } else if (isInList(3, rFreq)) {
+            if (isInList(2, rFreq)) {
                 return "Full House";
             } else {
                 return "Three of a Kind";
             }
-        } else if (rFreq.contains(2)) {
+        } else if (isInList(2, rFreq)) {
             rFreq.remove(rFreq.indexOf(2));
-            if (rFreq.contains(2)) {
+            if (isInList(2, rFreq)) {
                 return "Two Pair";
             } else {
                 return "A Pair";
             }
+        } else if (isInList(Utility.getRankValue(allCards.get(4).getRank()), list)) {
+            return "Nothing";
         }
+        System.out.println(list);
         return "High Card"; 
     }
 
-    public void sortAllCards(){
+    public void sortAllCards(){ // sorts cards based on ranking with insertion
         ArrayList<Card> cards = getAllCards();
         for (int c = 1; c < cards.size(); c++) {
             int count = c;
@@ -76,7 +84,7 @@ public class Player{
         allCards = cards;
     } 
 
-    public ArrayList<Integer> findRankingFrequency(){
+    public ArrayList<Integer> findRankingFrequency(){ //Counts the number of times a rank appears and returns a list
         ArrayList<Integer> rFreq = new ArrayList<>();
         for (int c = 0; c < Utility.getRanks().length; c++) {
             rFreq.add(0);
@@ -91,7 +99,7 @@ public class Player{
         return rFreq; 
     }
 
-    public ArrayList<Integer> findSuitFrequency(){
+    public ArrayList<Integer> findSuitFrequency(){ //Counts the number of times a suit appears and returns a list
         ArrayList<Integer> sFreq = new ArrayList<>();
         for (int c = 0; c < Utility.getSuits().length; c++) {
             sFreq.add(0);
@@ -106,7 +114,14 @@ public class Player{
         return sFreq; 
     }
 
-   
+        private boolean isInList (int num, ArrayList<Integer> list) { // this is the contains method replacement
+            for (int c : list) {
+                if (c == num) {
+                    return true;
+                }
+            }
+            return false;
+        }
     @Override
     public String toString(){
         return hand.toString();
