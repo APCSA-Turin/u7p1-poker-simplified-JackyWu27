@@ -15,11 +15,11 @@ public class Player{
     public ArrayList<Card> getHand(){return hand;}
     public ArrayList<Card> getAllCards(){return allCards;}
 
-    public void addCard(Card c){
+    public void addCard(Card c){ // adds a card
         hand.add(c);
     }
 
-    public String playHand(ArrayList<Card> communityCards){  
+    public String playHand(ArrayList<Card> communityCards){   // checks what hand it is based on the cards
         allCards = new ArrayList<Card>(); 
         ArrayList<Integer> list = new ArrayList<Integer>(); 
         for (int c = 0; c < communityCards.size(); c++) {
