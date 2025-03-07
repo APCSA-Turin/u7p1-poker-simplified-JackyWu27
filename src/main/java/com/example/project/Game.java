@@ -1,5 +1,6 @@
 package com.example.project;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class Game{
@@ -303,9 +304,54 @@ public class Game{
     }
 
     public static void play(){ //simulate card playing
-    
+        int money = 1000;
+        Scanner scan = new Scanner(System.in);
+        String ans = "";
+        Deck deck = new Deck();
+        deck.initializeDeck();  
+        deck.shuffleDeck();
+        ArrayList<Card> community = new ArrayList<Card>();
+        while (!ans.equals("No") && money > 0) {
+            Player p1 = new Player();
+            Player p2 = new Player();
+            p1.addCard(deck.drawCard());
+            p1.addCard(deck.drawCard());
+            p2.addCard(deck.drawCard());
+            p2.addCard(deck.drawCard());
+            community.add(deck.drawCard());
+            community.add(deck.drawCard());
+            community.add(deck.drawCard());
+            String p1hand = p1.playHand(community);
+            String p2hand = p2.playHand(community);
+            System.out.println("\nAmount of money remaining: $" + money);
+            System.err.println("\nYour hand:\n" + p1.getHand().get(0).toString() + " and " + p1.getHand().get(1).toString());
+            System.err.println("Community Cards:\n" + community.get(0).toString() + ", " + community.get(1).toString() + ", and " + community.get(2).toString());
+            System.out.println("\nHow much do you want to bet?");
+            int bet = scan.nextInt();
+            String results = determineWinner(p1, p2, p1hand, p2hand, community);
+            if (results.equals("Player 1 wins!")) {
+                money += bet;
+                System.out.println("You won " + bet + " dollars!");
+            } else if (results.equals("Player 2 wins!")) {
+                money -= bet;
+                System.out.println("You lost " + bet + " dollars!");
+            } else {
+                System.out.println("It's a tie!");
+            }
+            System.out.println("\nOpponent's hand:\n" + p2.getHand().get(0).toString() + " and " + p2.getHand().get(1).toString());
+            System.out.println("\nDo you wish to keep playing?");
+            scan.nextLine();
+            ans = scan.nextLine();
+        }
+        if (money == 0) {
+            System.out.println("Well you can't because your out of money");
+        } else if (money < 0) {
+            System.out.println("Well you can't since you bet more than you have and lost");
+        }
     }
         
-        
+    public static void main(String[] args) {
+        play();
+    }
 
 }

@@ -31,14 +31,18 @@ public class Deck{
         if (isEmpty()) {
             return null;
         }
-       return cards.remove(0);
+        if (cards.size() < 7) {
+            cards.clear();
+            initializeDeck();
+            shuffleDeck();
+        }
+        return cards.remove(0);
     }
 
     public  boolean isEmpty(){
         return cards.isEmpty();
     }
 
-   
-
+    
 
 }
